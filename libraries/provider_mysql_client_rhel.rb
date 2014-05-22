@@ -11,8 +11,42 @@ class Chef
         end
 
         action :create do
+          case node['platform_version'].to_i.to_s
+          when '2013'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql'
+            when '5.5'
+              package_name = 'mysql'
+            end
+          when '2014'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql-server'
+            when '5.5'
+              package_name = 'mysql'
+            end
+          when '6'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql'
+            when '5.5'
+              package_name = 'mysql55'
+            end
+          when '5'
+            case new_resource.version
+            when '5.0'
+              package_name = 'mysql'
+            when '5.1'
+              package_name = 'mysql51'
+            when '5.5'
+              package_name = 'mysql55'
+            end
+          end
+
           converge_by 'rhel pattern' do
-            %w(mysql mysql-devel).each do |p|
+            package_name = 'mysql55'
+            [package_name, "#{package_name}-devel"].each do |p|
               package p do
                 action :install
               end
@@ -21,8 +55,41 @@ class Chef
         end
 
         action :delete do
+          case node['platform_version'].to_i.to_s
+          when '2013'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql'
+            when '5.5'
+              package_name = 'mysql'
+            end
+          when '2014'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql-server'
+            when '5.5'
+              package_name = 'mysql'
+            end
+          when '6'
+            case new_resource.version
+            when '5.1'
+              package_name = 'mysql'
+            when '5.5'
+              package_name = 'mysql55'
+            end
+          when '5'
+            case new_resource.version
+            when '5.0'
+              package_name = 'mysql'
+            when '5.1'
+              package_name = 'mysql51'
+            when '5.5'
+              package_name = 'mysql55'
+            end
+          end
           converge_by 'rhel pattern' do
-            %w(mysql mysql-devel).each do |p|
+            package_name = 'mysql55'
+            [package_name, "#{package_name}-devel"].each do |p|
               package p do
                 action :remove
               end
