@@ -45,7 +45,6 @@ class Chef
           end
 
           converge_by 'rhel pattern' do
-            package_name = 'mysql55'
             [package_name, "#{package_name}-devel"].each do |p|
               package p do
                 action :install
@@ -88,7 +87,6 @@ class Chef
             end
           end
           converge_by 'rhel pattern' do
-            package_name = 'mysql55'
             [package_name, "#{package_name}-devel"].each do |p|
               package p do
                 action :remove

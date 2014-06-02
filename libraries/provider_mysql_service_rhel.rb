@@ -27,6 +27,7 @@ class Chef
               pid_file = '/var/run/mysql/mysql.pid'
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
+              repo = 'default'
               service_name = 'mysqld'
             when '5.5'
               base_dir = ''
@@ -38,6 +39,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
               service_name = 'mysqld'
+              repo = 'default'
             end
           when '2014'
             case new_resource.version
@@ -51,6 +53,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
               service_name = 'mysqld'
+              repo = 'default'
             when '5.5'
               base_dir = ''
               include_dir = "#{base_dir}/etc/mysql/conf.d"
@@ -61,6 +64,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
               service_name = 'mysqld'
+              repo = 'default'
             end
           when '6'
             case new_resource.version
@@ -74,6 +78,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
               service_name = 'mysqld'
+              repo = 'default'
             when '5.5'
               base_dir = ''
               include_dir = "#{base_dir}/etc/mysql/conf.d"
@@ -84,6 +89,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql55-server'
               service_name = 'mysqld'
+              repo = 'ius'
             end
           when '5'
             case new_resource.version
@@ -97,6 +103,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql-server'
               service_name = 'mysqld'
+              repo = 'default'
             when '5.1'
               base_dir = '/opt/rh/mysql51/root'
               include_dir = "#{base_dir}/etc/mysql/conf.d"
@@ -107,6 +114,7 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql51-mysql-server'
               service_name = 'mysql51-mysqld'
+              repo = 'default'
             when '5.5'
               base_dir = '/opt/rh/mysql55/root'
               include_dir = "#{base_dir}/etc/mysql/conf.d"
@@ -117,12 +125,15 @@ class Chef
               socket_file = '/var/lib/mysql/mysql.sock'
               package_name = 'mysql55-mysql-server'
               service_name = 'mysql55-mysqld'
+              repo = 'default'
             end
           end
 
           converge_by 'rhel pattern' do
-            recipe_eval do
-              run_context.include_recipe "yum-ius"
+            if repo == 'ius'
+              recipe_eval do
+                run_context.include_recipe "yum-ius"
+              end
             end
 
             package package_name do

@@ -26,7 +26,11 @@ class Chef
 
       # attribute :version, kind_of: String
       def version(arg = nil)
-        @version = arg
+        set_or_return(
+          :version,
+          arg,
+          :kind_of => String
+          )
       end
 
     end
